@@ -52,25 +52,39 @@ def main():
     K[0] = params.K_init
     A[0] = params.A_init
     Y[0] = params.Y_init
+
+    ##### remove #####
+    Y_alt = A[0] * K[0]**params.kappa * E[0]**params.nu
+    print(f"Y_alt = {Y_alt}")
+    ##### remove #####  
+    
     C[0] = x_opti * Y[0] * (1-D[0])
     k[0] = np.log(K[0]) 
     # equations of motion
     k[1] = (np.log(A[0])) + (params.kappa * k[0]) + (params.nu * (np.log(E[0]))) - (params.xi * M[0]) + np.log(1 - x_opti) #using control value x_opti
     M[1] = (1-params.delta) * M[0] + E[0]
 
-
     print(f"Y[0] = {Y[0]}")
     print(f"K[0] = {K[0]}")
     print(f"D[0] = {D[0]}")
     print(f"M[0] = {M[0]}")
 
+    ### debugging ###
+    print(f"log(A[0]) = {np.log(A[0])}")
+    print(f"kappa * k[0] = {params.kappa * k[0]}")
+    print(f"nu * log(E[0]) = {params.nu * (np.log(E[0]))}")
+    print(f"-xi * M[0] = {-params.xi * M[0]}")
+    print(f"log(1 - x_opti) = {np.log(1 - x_opti)}")
+    print(f"k[1] = {k[1]}")
+    print(np.exp(k[1]))
+    ############################
 
     # Loop starts from index 1
     for i, t in enumerate(range(10, params.t_max, params.step_size), start=1):
 
         print(f"\nYear {t}")
        
-        E[i] = E_opti+ 2 ############## ADJUST ##############
+        E[i] = E_opti ############## ADJUST??? ##############
         D[i] = 1 - np.exp(-params.xi * M[i])
 
         K[i] = np.exp(k[i])
@@ -89,16 +103,25 @@ def main():
         print(f"K[i] = {K[i]}")
         print(f"D[i] = {D[i]}")
         print(f"M[i] = {M[i]}")
+        print(f"E[i] = {E[i]}")
+        print("########################")
+        ### debugging ###
+        print(f"log(A[i]) = {np.log(A[i])}")
+        print(f"kappa * k[i] = {params.kappa * k[i]}")
+        print(f"nu * log(E[i]) = {params.nu * (np.log(E[i]))}")
+        print(f"-xi * M[i] = {-params.xi * M[i]}")
+        print(f"log(1 - x_opti) = {np.log(1 - x_opti)}")
+        print(f"k[i+1] = {k[i+1]}")
+        print(np.exp(k[i+1]))
 
 
 
     
 
-    plot_time_series( Y, title="GDP Y")
-    plot_time_series( K, title="K")
-    plot_time_series( D, title="D")
-    plot_time_series( M, title="Athmospheric Carbon")
-
+    plot_time_series( Y, title="GDP Y", xlabel="Year", ylabel="GDP")
+    plot_time_series( K, title="K", xlabel="Year", ylabel="Capital")
+    # plot_time_series( D, title="D", xlabel="Year", ylabel="Damage")
+    # plot_time_series( M, title="Athmospheric Carbon", xlabel="Year", ylabel="Carbon")
 
 
 if __name__ == "__main__":
