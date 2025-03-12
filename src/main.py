@@ -16,7 +16,6 @@ def main():
     A = np.zeros(num_timesteps)
     C = np.zeros(num_timesteps)
     k = np.zeros(num_timesteps+1)
-    #x = np.zeros(num_timesteps)
     #Climate
     D = np.zeros(num_timesteps)
     M = np.zeros(num_timesteps+1)
@@ -38,7 +37,6 @@ def main():
     print(f"phi_m = {phi_M}")
     print(f"x_opti = {x_opti}")
     print(f"E_opti = {E_opti}")
-
     #####################
     ### Run the model ###
 
@@ -52,11 +50,6 @@ def main():
     K[0] = params.K_init
     A[0] = params.A_init
     Y[0] = params.Y_init
-
-    ##### remove #####
-    Y_alt = A[0] * K[0]**params.kappa * E[0]**params.nu
-    print(f"Y_alt = {Y_alt}")
-    ##### remove #####  
     
     C[0] = x_opti * Y[0] * (1-D[0])
     k[0] = np.log(K[0]) 
@@ -68,7 +61,6 @@ def main():
     print(f"K[0] = {K[0]}")
     print(f"D[0] = {D[0]}")
     print(f"M[0] = {M[0]}")
-
     ### debugging ###
     print(f"log(A[0]) = {np.log(A[0])}")
     print(f"kappa * k[0] = {params.kappa * k[0]}")
@@ -104,6 +96,8 @@ def main():
         print(f"D[i] = {D[i]}")
         print(f"M[i] = {M[i]}")
         print(f"E[i] = {E[i]}")
+        print(f"investment = {Y[i]*(1-x_opti)}")
+
         print("########################")
         ### debugging ###
         print(f"log(A[i]) = {np.log(A[i])}")
@@ -120,6 +114,7 @@ def main():
 
     plot_time_series( Y, title="GDP Y", xlabel="Year", ylabel="GDP")
     plot_time_series( K, title="K", xlabel="Year", ylabel="Capital")
+
     # plot_time_series( D, title="D", xlabel="Year", ylabel="Damage")
     # plot_time_series( M, title="Athmospheric Carbon", xlabel="Year", ylabel="Carbon")
 
